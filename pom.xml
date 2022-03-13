@@ -34,7 +34,7 @@
         <common-api.version>1.1.0</common-api.version>
         <heaven.version>0.1.157</heaven.version>
         <test.version>0.0.1</test.version>
-        <hash.version>0.0.5</hash.version>
+        <hash.version>0.0.6</hash.version>
         <secret.version>1.0.0</secret.version>
         <hibernate-validator-annotation.version>0.0.3</hibernate-validator-annotation.version>
         <!--============================== OTHER ==============================-->

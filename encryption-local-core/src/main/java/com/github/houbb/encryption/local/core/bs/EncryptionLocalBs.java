@@ -16,6 +16,9 @@ import com.github.houbb.secret.api.api.ISecret;
 import com.github.houbb.secret.core.bs.SecretBs;
 import com.github.houbb.secret.core.support.secret.Secrets;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
 /**
  * @author binbin.hou
  * @since 1.0.0
@@ -27,6 +30,11 @@ public final class EncryptionLocalBs {
     public static EncryptionLocalBs newInstance() {
         return new EncryptionLocalBs();
     }
+
+    /**
+     * 编码
+     */
+    private Charset charset = StandardCharsets.UTF_8;
 
     /**
      * 秘钥
@@ -47,6 +55,13 @@ public final class EncryptionLocalBs {
      * 上下文
      */
     private IEncryptionContext encryptionContext;
+
+    public EncryptionLocalBs charset(Charset charset) {
+        ArgUtil.notNull(charset, "charset");
+
+        this.charset = charset;
+        return this;
+    }
 
     public EncryptionLocalBs salt(String salt) {
         ArgUtil.notEmpty(salt, "salt");
@@ -76,13 +91,16 @@ public final class EncryptionLocalBs {
     public synchronized EncryptionLocalBs init() {
         ArgUtil.notEmpty(salt, "salt");
 
+        final byte[] salts = salt.getBytes(charset);
         HashBs hashBs = HashBs.newInstance()
+                .charset(charset)
                 .hash(hash)
-                .salt(salt.getBytes());
+                .salt(salts);
 
         SecretBs secretBs = SecretBs.newInstance()
+                .charset(charset.name())
                 .secret(secret)
-                .key(salt.getBytes());
+                .key(salts);
 
         this.encryptionContext = EncryptionContext.newInstance()
             .hashBs(hashBs)

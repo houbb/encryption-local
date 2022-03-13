@@ -21,6 +21,7 @@
             <groupId>com.github.houbb</groupId>
             <artifactId>test-core</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>
