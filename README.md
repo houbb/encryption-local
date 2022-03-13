@@ -1,8 +1,8 @@
 # encryption-local
 
-[encryption-local]() 一个离线版本的金融敏感信息加密工具，用于数据库敏感信息存储。
+[encryption-local]() 一个离线版本的金融敏感信息加解密工具，用于数据库敏感信息存储。
 
-创作目的：为金融敏感数据，提供一个简单易用的离线加密工具。加密机服务可以在此基础上很容易的实现。（已实现，为开源）
+创作目的：为金融敏感数据，提供一个简单易用的离线加解密工具。加密机服务可以在此基础上很容易的实现。
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.houbb/encryption-local/badge.svg)](http://mvnrepository.com/artifact/com.github.houbb/encryption-local)
 [![Build Status](https://www.travis-ci.org/houbb/encryption-local.svg?branch=master)](https://www.travis-ci.org/houbb/encryption-local?branch=master)
@@ -14,17 +14,17 @@
 
 ## 特性
 
-- 身份证加密解密
+- 身份证加解密
 
-- 地址加密解密
+- 地址加解密
 
-- 姓名加密解密
+- 姓名加解密
 
-- 邮箱加密解密
+- 邮箱加解密
 
-- 手机号加密解密
+- 手机号加解密
 
-- 银行卡加密解密
+- 银行卡加解密
 
 # 变更日志
 
@@ -122,6 +122,8 @@ Assert.assertEquals(email, plain);
 | 身份证 | 330781198509079479 | 74101E0AAF25796680E40F3198D1AEFBC00E25FD8316F40CE90B425338894A42 | `330781*********479` | 2C7E7A814C36DE11EF01F39C35CECF12 |
 | 银行卡 | 4427290920309717 | 288D5EC5432203677D3714E9A270F9998AC04BF65E5A36C6773187A4239D05EE | `442729******9717` | DE550BAF362B3EF640FF5AEC7D6E2F38 |
 
+> 完整例子参考 [EncryptionLocalUtilTest.java](https://github.com/houbb/encryption-local/blob/master/encryption-local-test/src/test/java/com/github/houbb/encryption/local/test/EncryptionLocalUtilTest.java)
+
 ## 引导类
 
 为了便于用于拓展，加密支持通过引导类 `EncryptionLocalBs` 灵活指定配置。
@@ -174,9 +176,9 @@ Assert.assertEquals(name, plain);
 
 好处时，在引导类 salt 固定的情况下，我们后续参数可以少传入一个参数 salt。
 
-# ROAD-MAP
+> 完整例子参考 [EncryptionLocalBsTest.java](https://github.com/houbb/encryption-local/blob/master/encryption-local-test/src/test/java/com/github/houbb/encryption/local/test/EncryptionLocalBsTest.java)
 
-- [ ] 待定
+# ROAD-MAP
 
 - [ ] 基于注解的属性映射
 
