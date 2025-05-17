@@ -1,9 +1,7 @@
 package com.github.houbb.encryption.local.api.core;
 
 
-import com.github.houbb.hash.api.IHash;
 import com.github.houbb.hash.core.bs.HashBs;
-import com.github.houbb.secret.api.api.ISecret;
 import com.github.houbb.secret.core.bs.SecretBs;
 
 /**

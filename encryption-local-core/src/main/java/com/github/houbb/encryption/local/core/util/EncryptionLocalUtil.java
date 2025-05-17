@@ -1,9 +1,8 @@
 package com.github.houbb.encryption.local.core.util;
 
-import com.github.houbb.encryption.local.api.core.IEncryption;
 import com.github.houbb.encryption.local.api.dto.resp.CommonEncryptResponse;
+import com.github.houbb.encryption.local.api.enums.EncryptTypeEnum;
 import com.github.houbb.encryption.local.core.bs.EncryptionLocalBs;
-import com.github.houbb.encryption.local.core.core.Encryptions;
 import com.github.houbb.hash.api.IHash;
 import com.github.houbb.hash.core.core.hash.Hashes;
 import com.github.houbb.secret.api.api.ISecret;
@@ -31,7 +30,7 @@ public class EncryptionLocalUtil {
      */
     public static CommonEncryptResponse addressEncrypt(String plainText,
                                                 String salt) {
-        return encrypt(Encryptions.address(), plainText, salt);
+        return encrypt(EncryptTypeEnum.ADDRESS, plainText, salt);
     }
 
     /**
@@ -52,7 +51,7 @@ public class EncryptionLocalUtil {
      */
     public static CommonEncryptResponse nameEncrypt(String plainText,
                                                        String salt) {
-        return encrypt(Encryptions.name(), plainText, salt);
+        return encrypt(EncryptTypeEnum.NAME, plainText, salt);
     }
 
     /**
@@ -73,7 +72,7 @@ public class EncryptionLocalUtil {
      */
     public static CommonEncryptResponse emailEncrypt(String plainText,
                                                     String salt) {
-        return encrypt(Encryptions.email(), plainText, salt);
+        return encrypt(EncryptTypeEnum.EMAIL, plainText, salt);
     }
 
     /**
@@ -94,7 +93,7 @@ public class EncryptionLocalUtil {
      */
     public static CommonEncryptResponse phoneEncrypt(String plainText,
                                                      String salt) {
-        return encrypt(Encryptions.phone(), plainText, salt);
+        return encrypt(EncryptTypeEnum.PHONE, plainText, salt);
     }
 
     /**
@@ -115,7 +114,7 @@ public class EncryptionLocalUtil {
      */
     public static CommonEncryptResponse idCardEncrypt(String plainText,
                                                      String salt) {
-        return encrypt(Encryptions.idCard(), plainText, salt);
+        return encrypt(EncryptTypeEnum.ID_CARD, plainText, salt);
     }
 
     /**
@@ -136,7 +135,7 @@ public class EncryptionLocalUtil {
      */
     public static CommonEncryptResponse bankCardNoEncrypt(String plainText,
                                                       String salt) {
-        return encrypt(Encryptions.bankCardNo(), plainText, salt);
+        return encrypt(EncryptTypeEnum.BANK_CARD_NUM, plainText, salt);
     }
 
     /**
@@ -157,7 +156,7 @@ public class EncryptionLocalUtil {
      */
     public static CommonEncryptResponse passwordEncrypt(String plainText,
                                                           String salt) {
-        return encrypt(Encryptions.password(), plainText, salt);
+        return encrypt(EncryptTypeEnum.PASSWORD, plainText, salt);
     }
 
     /**
@@ -170,53 +169,7 @@ public class EncryptionLocalUtil {
         return passwordEncrypt(plainText, DEFAULT_SALT);
     }
 
-    /**
-     * 加密
-     * @param encryption 加密策略
-     * @param plainText 明文
-     * @param salt 秘钥
-     * @return 结果
-     */
-    public static CommonEncryptResponse encrypt(IEncryption encryption,
-                                                String plainText,
-                                                String salt) {
-        return encrypt(encryption, plainText, salt, Hashes.md5(), Secrets.aes());
-    }
 
-    /**
-     * 加密
-     * @param encryption 加密策略
-     * @param plainText 明文
-     * @param salt 秘钥
-     * @param hash 哈希策略
-     * @param secret 加密策略
-     * @return 结果
-     */
-    public static CommonEncryptResponse encrypt(IEncryption encryption,
-                                                String plainText,
-                                                String salt,
-                                                IHash hash,
-                                                ISecret secret) {
-        EncryptionLocalBs encryptionLocalBs = EncryptionLocalBs.newInstance()
-                .salt(salt)
-                .hash(hash)
-                .secret(secret);
-
-        return encryptionLocalBs.encrypt(encryption, plainText);
-    }
-
-    /**
-     * 解密
-     * @param encryption 加密策略
-     * @param cipher 密文
-     * @param salt 秘钥
-     * @return 结果
-     */
-    public static String decrypt(IEncryption encryption,
-                                                String cipher,
-                                                String salt) {
-        return decrypt(encryption, cipher, salt, Hashes.md5(), Secrets.aes());
-    }
 
     /**
      * 地址解密
@@ -226,7 +179,7 @@ public class EncryptionLocalUtil {
      */
     public static String addressDecrypt(String cipher,
                                  String salt) {
-        return decrypt(Encryptions.address(), cipher, salt);
+        return decrypt(EncryptTypeEnum.ADDRESS, cipher, salt);
     }
 
     /**
@@ -237,7 +190,7 @@ public class EncryptionLocalUtil {
      */
     public static String emailDecrypt(String cipher,
                                         String salt) {
-        return decrypt(Encryptions.email(), cipher, salt);
+        return decrypt(EncryptTypeEnum.EMAIL, cipher, salt);
     }
 
     /**
@@ -248,7 +201,7 @@ public class EncryptionLocalUtil {
      */
     public static String phoneDecrypt(String cipher,
                                       String salt) {
-        return decrypt(Encryptions.phone(), cipher, salt);
+        return decrypt(EncryptTypeEnum.PHONE, cipher, salt);
     }
 
     /**
@@ -259,7 +212,7 @@ public class EncryptionLocalUtil {
      */
     public static String nameDecrypt(String cipher,
                                       String salt) {
-        return decrypt(Encryptions.name(), cipher, salt);
+        return decrypt(EncryptTypeEnum.NAME, cipher, salt);
     }
 
     /**
@@ -268,9 +221,9 @@ public class EncryptionLocalUtil {
      * @param salt 秘钥
      * @return 结果
      */
-    public static String bankCardNoDecrypt(String cipher,
+    public static String bankCardNumDecrypt(String cipher,
                                      String salt) {
-        return decrypt(Encryptions.bankCardNo(), cipher, salt);
+        return decrypt(EncryptTypeEnum.BANK_CARD_NUM, cipher, salt);
     }
 
     /**
@@ -281,7 +234,7 @@ public class EncryptionLocalUtil {
      */
     public static String idCardDecrypt(String cipher,
                                            String salt) {
-        return decrypt(Encryptions.idCard(), cipher, salt);
+        return decrypt(EncryptTypeEnum.ID_CARD, cipher, salt);
     }
 
     /**
@@ -330,8 +283,8 @@ public class EncryptionLocalUtil {
      * @return 明文
      * @since 1.1.0
      */
-    public static String bankCardNoDecrypt(String cipher) {
-        return bankCardNoDecrypt(cipher, DEFAULT_SALT);
+    public static String bankCardNumDecrypt(String cipher) {
+        return bankCardNumDecrypt(cipher, DEFAULT_SALT);
     }
 
     /**
@@ -352,7 +305,7 @@ public class EncryptionLocalUtil {
      */
     public static String passwordDecrypt(String cipher,
                                          String salt) {
-        return decrypt(Encryptions.password(), cipher, salt);
+        return decrypt(EncryptTypeEnum.PASSWORD, cipher, salt);
     }
 
     /**
@@ -367,15 +320,64 @@ public class EncryptionLocalUtil {
 
 
     /**
-     * 解密
-     * @param encryption 加密策略
-     * @param cipher 密文
+     * 加密
+     * @param typeEnum 加密策略
+     * @param plainText 明文
+     * @param salt 秘钥
+     * @return 结果
+     */
+    private static CommonEncryptResponse encrypt(final EncryptTypeEnum typeEnum,
+                                                String plainText,
+                                                String salt) {
+        return encrypt(typeEnum, plainText, salt, Hashes.md5(), Secrets.aes());
+    }
+
+    /**
+     * 加密
+     * @param typeEnum 加密策略
+     * @param plainText 明文
      * @param salt 秘钥
      * @param hash 哈希策略
      * @param secret 加密策略
      * @return 结果
      */
-    public static String decrypt(IEncryption encryption,
+    private static CommonEncryptResponse encrypt(final EncryptTypeEnum typeEnum,
+                                                String plainText,
+                                                String salt,
+                                                IHash hash,
+                                                ISecret secret) {
+        EncryptionLocalBs encryptionLocalBs = EncryptionLocalBs.newInstance()
+                .salt(salt)
+                .hash(hash)
+                .secret(secret);
+
+        return encryptionLocalBs.encrypt(plainText, typeEnum.getCode());
+    }
+
+    /**
+     * 解密
+     * @param typeEnum 加密策略
+     * @param cipher 密文
+     * @param salt 秘钥
+     * @return 结果
+     */
+    private static String decrypt(final EncryptTypeEnum typeEnum,
+                                 String cipher,
+                                 String salt) {
+        return decrypt(typeEnum, cipher, salt, Hashes.md5(), Secrets.aes());
+    }
+
+    /**
+     * 解密
+     * @param typeEnum 加密策略
+     * @param cipher 密文
+     * @param salt 秘钥
+     * @param hash 哈希策略
+     * @param secret 加密策略
+     * @return 结果
+     * @since 1.2.0
+     */
+    private static String decrypt(final EncryptTypeEnum typeEnum,
                                                 String cipher,
                                                 String salt,
                                                 IHash hash,
@@ -385,7 +387,7 @@ public class EncryptionLocalUtil {
                 .hash(hash)
                 .secret(secret);
 
-        return encryptionLocalBs.decrypt(encryption, cipher);
+        return encryptionLocalBs.decrypt(cipher, typeEnum.getCode());
     }
 
     /**

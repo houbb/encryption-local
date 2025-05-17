@@ -1,5 +1,7 @@
 package com.github.houbb.encryption.local.core.core;
 
+import com.github.houbb.encryption.local.api.core.EncryptMaskContext;
+import com.github.houbb.encryption.local.api.core.IEncryptMask;
 import com.github.houbb.encryption.local.api.core.IEncryption;
 import com.github.houbb.encryption.local.api.core.IEncryptionContext;
 import com.github.houbb.encryption.local.api.dto.req.CommonDecryptRequest;
@@ -10,12 +12,20 @@ import com.github.houbb.secret.core.bs.SecretBs;
 import com.github.houbb.secret.core.util.HexUtil;
 
 /**
+ * 通用策略
+ *
  * @author binbin.hou
- * @since 1.0.0
+ * @since 1.2.0
  */
-public abstract class AbstractEncryption implements IEncryption {
+public class CommonEncryption implements IEncryption {
 
-    protected abstract String getMask(String plainText);
+    protected String getMask(CommonEncryptRequest request) {
+        EncryptMaskContext context = new EncryptMaskContext();
+        context.setPlainText(request.getText());
+
+        final IEncryptMask encryptMask = request.getEncryptMask();
+        return encryptMask.mask(context);
+    }
 
     @Override
     public CommonEncryptResponse encrypt(CommonEncryptRequest request, IEncryptionContext context) {
@@ -28,7 +38,7 @@ public abstract class AbstractEncryption implements IEncryption {
         String hash = context.hashBs().execute(plain);
 
         //3. 掩码
-        String mask = getMask(plain);
+        String mask = getMask(request);
 
         CommonEncryptResponse response = new CommonEncryptResponse();
         response.setMask(mask);

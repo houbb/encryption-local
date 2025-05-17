@@ -56,7 +56,7 @@ maven 3.x+
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>encryption-local-core</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 
@@ -95,7 +95,7 @@ maven 3.x+
 | emailDecrypt      | 邮箱解密  |
 | phoneDecrypt      | 手机号解密 |
 | idCardDecrypt     | 身份证解密 |
-| bankCardNoDecrypt | 银行卡解密 |
+| bankCardNumDecrypt | 银行卡解密 |
 | passwordDecrypt   | 密码解密  |
 
 统一入参：`cipher` 为加密之后的密文字符串
@@ -159,39 +159,17 @@ EncryptionLocalBs 中支持用户自定义下列配置。
 
 ### 例子
 
-引导类创建：
-
 ```java
-private EncryptionLocalBs getLocalBs() {
-    return EncryptionLocalBs.newInstance()
-            .hash(Hashes.md5())
-            .secret(Secrets.aes())
-            .salt("99886622");
-}
-```
+EncryptionLocalBs localBs = EncryptionLocalBs.newInstance();
 
-以名称加密为例：
-
-```java
-final String name = "海绵宝宝";
-EncryptionLocalBs localBs = getLocalBs();
-
-CommonEncryptResponse response = localBs.nameEncrypt(name);
-String cipher = response.getCipher();
-String mask = response.getMask();
-String hash = response.getHash();
-Assert.assertEquals("91AF56071FA8830391144DBEAE3967DA", cipher);
-Assert.assertEquals("海**宝", mask);
-Assert.assertEquals("94B221D98E0EF588B5304A88752DC6C7", hash);
+// 加密
+CommonEncryptResponse encryptResponse = localBs.encrypt("123456", EncryptTypeEnum.PASSWORD.getCode());
+Assert.assertEquals("CommonEncryptResponse{cipher='8B208237BEB2E6A4390E7128E5E000D7', mask='******', hash='FEB408A10822A55A939E8E38A6612515'}", encryptResponse.toString());
 
 // 解密
-String plain = localBs.nameDecrypt(cipher);
-Assert.assertEquals(name, plain);
+String plainText = localBs.decrypt(encryptResponse.getCipher(), EncryptTypeEnum.PASSWORD.getCode());
+Assert.assertEquals("123456", plainText);
 ```
-
-好处时，在引导类 salt 固定的情况下，我们后续参数可以少传入一个参数 salt。
-
-> 完整例子参考 [EncryptionLocalBsTest.java](https://github.com/houbb/encryption-local/blob/master/encryption-local-test/src/test/java/com/github/houbb/encryption/local/test/EncryptionLocalBsTest.java)
 
 # ROAD-MAP
 

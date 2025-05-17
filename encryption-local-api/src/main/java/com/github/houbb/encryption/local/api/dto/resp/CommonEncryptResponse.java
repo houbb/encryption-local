@@ -52,7 +52,7 @@ public class CommonEncryptResponse extends CommonResponse {
                 "cipher='" + cipher + '\'' +
                 ", mask='" + mask + '\'' +
                 ", hash='" + hash + '\'' +
-                "} ";
+                "}";
     }
 
 }

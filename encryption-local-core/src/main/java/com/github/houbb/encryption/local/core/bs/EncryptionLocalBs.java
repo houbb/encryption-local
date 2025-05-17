@@ -1,13 +1,12 @@
 package com.github.houbb.encryption.local.core.bs;
 
-import com.github.houbb.encryption.local.api.core.IEncryption;
-import com.github.houbb.encryption.local.api.core.IEncryptionContext;
+import com.github.houbb.encryption.local.api.core.*;
 import com.github.houbb.encryption.local.api.dto.req.CommonDecryptRequest;
 import com.github.houbb.encryption.local.api.dto.req.CommonEncryptRequest;
-import com.github.houbb.encryption.local.api.dto.resp.CommonDecryptResponse;
 import com.github.houbb.encryption.local.api.dto.resp.CommonEncryptResponse;
+import com.github.houbb.encryption.local.core.core.DefaultEncryptionFactory;
 import com.github.houbb.encryption.local.core.core.EncryptionContext;
-import com.github.houbb.encryption.local.core.core.Encryptions;
+import com.github.houbb.encryption.local.core.support.mask.DefaultEncryptMaskFactory;
 import com.github.houbb.hash.api.IHash;
 import com.github.houbb.hash.core.bs.HashBs;
 import com.github.houbb.hash.core.core.hash.Hashes;
@@ -38,8 +37,10 @@ public final class EncryptionLocalBs {
 
     /**
      * 秘钥
+     *
+     * 建议用户自己指定
      */
-    private String salt = null;
+    private String salt = "99886622";
 
     /**
      * 哈希策略
@@ -52,9 +53,22 @@ public final class EncryptionLocalBs {
     private ISecret secret = Secrets.aes();
 
     /**
+     * 掩码工厂策略
+     * @since 1.2.0
+     */
+    private IEncryptMaskFactory maskFactory = new DefaultEncryptMaskFactory();
+
+    /**
+     * 加密工厂策略
+     * @since 1.2.0
+     */
+    private IEncryptionFactory encryptionFactory = new DefaultEncryptionFactory();
+
+    /**
      * 上下文
      */
     private IEncryptionContext encryptionContext;
+
 
     public EncryptionLocalBs charset(Charset charset) {
         ArgUtil.notNull(charset, "charset");
@@ -81,6 +95,20 @@ public final class EncryptionLocalBs {
         ArgUtil.notNull(secret, "secret");
 
         this.secret = secret;
+        return this;
+    }
+
+    public EncryptionLocalBs maskFactory(IEncryptMaskFactory maskFactory) {
+        ArgUtil.notNull(maskFactory, "maskFactory");
+
+        this.maskFactory = maskFactory;
+        return this;
+    }
+
+    public EncryptionLocalBs encryptionFactory(IEncryptionFactory encryptionFactory) {
+        ArgUtil.notNull(encryptionFactory, "encryptionFactory");
+
+        this.encryptionFactory = encryptionFactory;
         return this;
     }
 
@@ -112,162 +140,38 @@ public final class EncryptionLocalBs {
 
     /**
      * 加密
-     * @param encryption 策略
      * @param plainText 文本
+     * @param type 类别
      * @return 结果
+     * @since 1.2.0
      */
-    public CommonEncryptResponse encrypt(final IEncryption encryption, String plainText) {
+    public CommonEncryptResponse encrypt(String plainText, String type) {
         checkStatus();
+
+        final IEncryptMask encryptMask = maskFactory.get(type);
+        final IEncryption encryption = encryptionFactory.get(type);
 
         CommonEncryptRequest request = new CommonEncryptRequest();
         request.setText(plainText);
+        request.setEncryptMask(encryptMask);
 
         return encryption.encrypt(request, encryptionContext);
     }
 
     /**
-     * 地址加密
-     * @param plainText 文本
-     * @return 结果
-     */
-    public CommonEncryptResponse addressEncrypt(String plainText) {
-        return encrypt(Encryptions.address(), plainText);
-    }
-
-    /**
-     * 姓名加密
-     * @param plainText 文本
-     * @return 结果
-     */
-    public CommonEncryptResponse nameEncrypt(String plainText) {
-        return encrypt(Encryptions.name(), plainText);
-    }
-
-    /**
-     * 邮箱加密
-     * @param plainText 文本
-     * @return 结果
-     */
-    public CommonEncryptResponse emailEncrypt(String plainText) {
-        return encrypt(Encryptions.email(), plainText);
-    }
-
-    /**
-     * 手机号加密
-     * @param plainText 文本
-     * @return 结果
-     */
-    public CommonEncryptResponse phoneEncrypt(String plainText) {
-        return encrypt(Encryptions.phone(), plainText);
-    }
-
-    /**
-     * 银行卡加密
-     * @param plainText 文本
-     * @return 结果
-     */
-    public CommonEncryptResponse bankCardNoEncrypt(String plainText) {
-        return encrypt(Encryptions.bankCardNo(), plainText);
-    }
-
-    /**
-     * 身份证加密
-     * @param plainText 文本
-     * @return 结果
-     */
-    public CommonEncryptResponse idCardEncrypt(String plainText) {
-        return encrypt(Encryptions.idCard(), plainText);
-    }
-
-    /**
-     * 密码加密
-     * @param plainText 文本
-     * @return 结果
-     * @since 1.1.0
-     */
-    public CommonEncryptResponse passwordEncrypt(String plainText) {
-        return encrypt(Encryptions.password(), plainText);
-    }
-
-
-    /**
      * 解密
-     * @param encryption 策略
      * @param cipher 文本
+     * @param type 类别
      * @return 结果
      */
-    public String decrypt(final IEncryption encryption, String cipher) {
+    public String decrypt(String cipher, String type) {
         checkStatus();
+
+        final IEncryption encryption = encryptionFactory.get(type);
 
         CommonDecryptRequest request = new CommonDecryptRequest();
         request.setCipher(cipher);
-
         return encryption.decrypt(request, encryptionContext).getText();
-    }
-
-    /**
-     * 地址解密
-     * @param cipher 文本
-     * @return 结果
-     */
-    public String addressDecrypt(String cipher) {
-        return decrypt(Encryptions.address(), cipher);
-    }
-
-    /**
-     * 姓名解密
-     * @param cipher 文本
-     * @return 结果
-     */
-    public String nameDecrypt(String cipher) {
-        return decrypt(Encryptions.name(), cipher);
-    }
-
-    /**
-     * 手机号解密
-     * @param cipher 文本
-     * @return 结果
-     */
-    public String phoneDecrypt(String cipher) {
-        return decrypt(Encryptions.phone(), cipher);
-    }
-
-    /**
-     * 邮箱解密
-     * @param cipher 文本
-     * @return 结果
-     */
-    public String emailDecrypt(String cipher) {
-        return decrypt(Encryptions.email(), cipher);
-    }
-
-    /**
-     * 银行卡号解密
-     * @param cipher 文本
-     * @return 结果
-     */
-    public String bankCardNoDecrypt(String cipher) {
-        return decrypt(Encryptions.bankCardNo(), cipher);
-    }
-
-    /**
-     * 银行卡号解密
-     * @param cipher 文本
-     * @return 结果
-     */
-    public String idCardDecrypt(String cipher) {
-        return decrypt(Encryptions.idCard(), cipher);
-    }
-
-
-    /**
-     * 密码解密
-     * @param cipher 文本
-     * @return 结果
-     * @since 1.1.0
-     */
-    public String passwordDecrypt(String cipher) {
-        return decrypt(Encryptions.password(), cipher);
     }
 
     /**

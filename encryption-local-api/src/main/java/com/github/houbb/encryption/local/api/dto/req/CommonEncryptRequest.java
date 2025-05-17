@@ -1,5 +1,7 @@
 package com.github.houbb.encryption.local.api.dto.req;
 
+import com.github.houbb.encryption.local.api.core.IEncryptMask;
+
 /**
  * 加密入参
  *
@@ -13,6 +15,12 @@ public class CommonEncryptRequest extends CommonRequest {
      */
     private String text;
 
+    /**
+     * 加密策略
+     * @since 1.2.0
+     */
+    private IEncryptMask encryptMask;
+
     public String getText() {
         return text;
     }
@@ -21,4 +29,11 @@ public class CommonEncryptRequest extends CommonRequest {
         this.text = text;
     }
 
+    public IEncryptMask getEncryptMask() {
+        return encryptMask;
+    }
+
+    public void setEncryptMask(IEncryptMask encryptMask) {
+        this.encryptMask = encryptMask;
+    }
 }
