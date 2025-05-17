@@ -67,10 +67,10 @@ public class EncryptionLocalUtilTest {
 
     @Test
     public void phoneTest() {
-        final String email = "18888888888";
+        final String phone = "18888888888";
         final String salt = "99886622";
 
-        CommonEncryptResponse response = EncryptionLocalUtil.phoneEncrypt(email, salt);
+        CommonEncryptResponse response = EncryptionLocalUtil.phoneEncrypt(phone, salt);
         String cipher = response.getCipher();
         String mask = response.getMask();
         String hash = response.getHash();
@@ -80,7 +80,7 @@ public class EncryptionLocalUtilTest {
 
         // 解密
         String plain = EncryptionLocalUtil.phoneDecrypt(cipher, salt);
-        Assert.assertEquals(email, plain);
+        Assert.assertEquals(phone, plain);
     }
 
     @Test
@@ -119,6 +119,24 @@ public class EncryptionLocalUtilTest {
         // 解密
         String plain = EncryptionLocalUtil.idCardDecrypt(cipher, salt);
         Assert.assertEquals(bankCardNoTest, plain);
+    }
+
+    @Test
+    public void passwordTest() {
+        final String passwordText = "123456";
+        final String salt = "99886622";
+
+        CommonEncryptResponse response = EncryptionLocalUtil.passwordEncrypt(passwordText, salt);
+        String cipher = response.getCipher();
+        String mask = response.getMask();
+        String hash = response.getHash();
+        Assert.assertEquals("8B208237BEB2E6A4390E7128E5E000D7", cipher);
+        Assert.assertEquals("******", mask);
+        Assert.assertEquals("FEB408A10822A55A939E8E38A6612515", hash);
+
+        // 解密
+        String plain = EncryptionLocalUtil.passwordDecrypt(cipher, salt);
+        Assert.assertEquals(passwordText, plain);
     }
 
 }

@@ -180,6 +180,17 @@ public final class EncryptionLocalBs {
     }
 
     /**
+     * 密码加密
+     * @param plainText 文本
+     * @return 结果
+     * @since 1.1.0
+     */
+    public CommonEncryptResponse passwordEncrypt(String plainText) {
+        return encrypt(Encryptions.password(), plainText);
+    }
+
+
+    /**
      * 解密
      * @param encryption 策略
      * @param cipher 文本
@@ -246,6 +257,17 @@ public final class EncryptionLocalBs {
      */
     public String idCardDecrypt(String cipher) {
         return decrypt(Encryptions.idCard(), cipher);
+    }
+
+
+    /**
+     * 密码解密
+     * @param cipher 文本
+     * @return 结果
+     * @since 1.1.0
+     */
+    public String passwordDecrypt(String cipher) {
+        return decrypt(Encryptions.password(), cipher);
     }
 
     /**

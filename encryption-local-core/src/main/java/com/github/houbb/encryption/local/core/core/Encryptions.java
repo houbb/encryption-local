@@ -34,4 +34,14 @@ public final class Encryptions {
     public static IEncryption bankCardNo() {
         return Instances.singleton(BankCardNoEncryption.class);
     }
+
+    /**
+     * 密码
+     * @return 实现
+     * @since 1.1.0
+     */
+    public static IEncryption password() {
+        return new PasswordEncryption();
+    }
+
 }

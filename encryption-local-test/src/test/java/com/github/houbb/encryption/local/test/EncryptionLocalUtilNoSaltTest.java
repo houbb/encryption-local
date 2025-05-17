@@ -1,31 +1,21 @@
 package com.github.houbb.encryption.local.test;
 
 import com.github.houbb.encryption.local.api.dto.resp.CommonEncryptResponse;
-import com.github.houbb.encryption.local.core.bs.EncryptionLocalBs;
-import com.github.houbb.hash.core.core.hash.Hashes;
-import com.github.houbb.secret.core.support.secret.Secrets;
+import com.github.houbb.encryption.local.core.util.EncryptionLocalUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * @author binbin.hou
- * @since 1.0.0
+ * @since 1.1.0
  */
-public class EncryptionLocalBsTest {
-
-    private EncryptionLocalBs getLocalBs() {
-        return EncryptionLocalBs.newInstance()
-                .hash(Hashes.md5())
-                .secret(Secrets.aes())
-                .salt("99886622");
-    }
+public class EncryptionLocalUtilNoSaltTest {
 
     @Test
     public void addressTest() {
         final String address = "太平洋比基尼海滩比奇堡镇贝壳街124号的波萝屋";
 
-        EncryptionLocalBs localBs = getLocalBs();
-        CommonEncryptResponse response = localBs.addressEncrypt(address);
+        CommonEncryptResponse response = EncryptionLocalUtil.addressEncrypt(address);
         String cipher = response.getCipher();
         String mask = response.getMask();
         String hash = response.getHash();
@@ -34,16 +24,15 @@ public class EncryptionLocalBsTest {
         Assert.assertEquals("31912515337902B8A3CC1CBDB5772358", hash);
 
         // 解密
-        String plain = localBs.addressDecrypt(cipher);
+        String plain = EncryptionLocalUtil.addressDecrypt(cipher);
         Assert.assertEquals(address, plain);
     }
 
     @Test
     public void nameTest() {
         final String name = "海绵宝宝";
-        EncryptionLocalBs localBs = getLocalBs();
 
-        CommonEncryptResponse response = localBs.nameEncrypt(name);
+        CommonEncryptResponse response = EncryptionLocalUtil.nameEncrypt(name);
         String cipher = response.getCipher();
         String mask = response.getMask();
         String hash = response.getHash();
@@ -52,16 +41,15 @@ public class EncryptionLocalBsTest {
         Assert.assertEquals("94B221D98E0EF588B5304A88752DC6C7", hash);
 
         // 解密
-        String plain = localBs.nameDecrypt(cipher);
+        String plain = EncryptionLocalUtil.nameDecrypt(cipher);
         Assert.assertEquals(name, plain);
     }
 
     @Test
     public void emailTest() {
         final String email = "haimian@baobao.com";
-        EncryptionLocalBs localBs = getLocalBs();
 
-        CommonEncryptResponse response = localBs.emailEncrypt(email);
+        CommonEncryptResponse response = EncryptionLocalUtil.emailEncrypt(email);
         String cipher = response.getCipher();
         String mask = response.getMask();
         String hash = response.getHash();
@@ -70,16 +58,15 @@ public class EncryptionLocalBsTest {
         Assert.assertEquals("4C651B4CDACA3CFA4876277B678282A9", hash);
 
         // 解密
-        String plain = localBs.emailDecrypt(cipher);
+        String plain = EncryptionLocalUtil.emailDecrypt(cipher);
         Assert.assertEquals(email, plain);
     }
 
     @Test
     public void phoneTest() {
         final String phone = "18888888888";
-        EncryptionLocalBs localBs = getLocalBs();
 
-        CommonEncryptResponse response = localBs.phoneEncrypt(phone);
+        CommonEncryptResponse response = EncryptionLocalUtil.phoneEncrypt(phone);
         String cipher = response.getCipher();
         String mask = response.getMask();
         String hash = response.getHash();
@@ -88,16 +75,15 @@ public class EncryptionLocalBsTest {
         Assert.assertEquals("381FA900C0626D7D7E2DB185B3558166", hash);
 
         // 解密
-        String plain = localBs.phoneDecrypt(cipher);
+        String plain = EncryptionLocalUtil.phoneDecrypt(cipher);
         Assert.assertEquals(phone, plain);
     }
 
     @Test
     public void idCardTest() {
         final String idCard = "330781198509079479";
-        EncryptionLocalBs localBs = getLocalBs();
 
-        CommonEncryptResponse response = localBs.idCardEncrypt(idCard);
+        CommonEncryptResponse response = EncryptionLocalUtil.idCardEncrypt(idCard);
         String cipher = response.getCipher();
         String mask = response.getMask();
         String hash = response.getHash();
@@ -106,7 +92,7 @@ public class EncryptionLocalBsTest {
         Assert.assertEquals("2C7E7A814C36DE11EF01F39C35CECF12", hash);
 
         // 解密
-        String plain = localBs.idCardDecrypt(cipher);
+        String plain = EncryptionLocalUtil.idCardDecrypt(cipher);
         Assert.assertEquals(idCard, plain);
     }
 
@@ -115,9 +101,8 @@ public class EncryptionLocalBsTest {
     @Test
     public void bankCardNoTest() {
         final String bankCardNoTest = "4427290920309717";
-        EncryptionLocalBs localBs = getLocalBs();
 
-        CommonEncryptResponse response = localBs.bankCardNoEncrypt(bankCardNoTest);
+        CommonEncryptResponse response = EncryptionLocalUtil.bankCardNoEncrypt(bankCardNoTest);
         String cipher = response.getCipher();
         String mask = response.getMask();
         String hash = response.getHash();
@@ -126,8 +111,24 @@ public class EncryptionLocalBsTest {
         Assert.assertEquals("DE550BAF362B3EF640FF5AEC7D6E2F38", hash);
 
         // 解密
-        String plain = localBs.idCardDecrypt(cipher);
+        String plain = EncryptionLocalUtil.idCardDecrypt(cipher);
         Assert.assertEquals(bankCardNoTest, plain);
+    }
+
+    @Test
+    public void passwordTest() {
+        final String passwordText = "123456";
+        CommonEncryptResponse response = EncryptionLocalUtil.passwordEncrypt(passwordText);
+        String cipher = response.getCipher();
+        String mask = response.getMask();
+        String hash = response.getHash();
+        Assert.assertEquals("8B208237BEB2E6A4390E7128E5E000D7", cipher);
+        Assert.assertEquals("******", mask);
+        Assert.assertEquals("FEB408A10822A55A939E8E38A6612515", hash);
+
+        // 解密
+        String plain = EncryptionLocalUtil.passwordDecrypt(cipher);
+        Assert.assertEquals(passwordText, plain);
     }
 
 }

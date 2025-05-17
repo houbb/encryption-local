@@ -18,6 +18,12 @@ public class EncryptionLocalUtil {
     private EncryptionLocalUtil(){}
 
     /**
+     * 默认盐值
+     * @since 1.1.0
+     */
+    private static final String DEFAULT_SALT = "99886622";
+
+    /**
      * 地址加密
      * @param plainText 明文
      * @param salt 秘钥
@@ -26,6 +32,16 @@ public class EncryptionLocalUtil {
     public static CommonEncryptResponse addressEncrypt(String plainText,
                                                 String salt) {
         return encrypt(Encryptions.address(), plainText, salt);
+    }
+
+    /**
+     * 地址加密
+     * @param plainText 明文
+     * @return 结果
+     * @since 1.1.0
+     */
+    public static CommonEncryptResponse addressEncrypt(String plainText) {
+        return addressEncrypt(plainText, DEFAULT_SALT);
     }
 
     /**
@@ -40,6 +56,16 @@ public class EncryptionLocalUtil {
     }
 
     /**
+     * 姓名加密
+     * @param plainText 明文
+     * @return 结果
+     * @since 1.1.0
+     */
+    public static CommonEncryptResponse nameEncrypt(String plainText) {
+        return nameEncrypt(plainText, DEFAULT_SALT);
+    }
+
+    /**
      * 邮箱加密
      * @param plainText 明文
      * @param salt 秘钥
@@ -48,6 +74,16 @@ public class EncryptionLocalUtil {
     public static CommonEncryptResponse emailEncrypt(String plainText,
                                                     String salt) {
         return encrypt(Encryptions.email(), plainText, salt);
+    }
+
+    /**
+     * 邮箱加密
+     * @param plainText 明文
+     * @return 结果
+     * @since 1.1.0
+     */
+    public static CommonEncryptResponse emailEncrypt(String plainText) {
+        return emailEncrypt(plainText, DEFAULT_SALT);
     }
 
     /**
@@ -62,6 +98,16 @@ public class EncryptionLocalUtil {
     }
 
     /**
+     * 手机加密
+     * @param plainText 明文
+     * @return 结果
+     * @since 1.1.0
+     */
+    public static CommonEncryptResponse phoneEncrypt(String plainText) {
+        return phoneEncrypt(plainText, DEFAULT_SALT);
+    }
+
+    /**
      * 身份证加密
      * @param plainText 明文
      * @param salt 秘钥
@@ -73,6 +119,16 @@ public class EncryptionLocalUtil {
     }
 
     /**
+     * 身份证加密
+     * @param plainText 明文
+     * @return 结果
+     * @since 1.1.0
+     */
+    public static CommonEncryptResponse idCardEncrypt(String plainText) {
+        return idCardEncrypt(plainText, DEFAULT_SALT);
+    }
+
+    /**
      * 银行卡加密
      * @param plainText 明文
      * @param salt 秘钥
@@ -81,6 +137,37 @@ public class EncryptionLocalUtil {
     public static CommonEncryptResponse bankCardNoEncrypt(String plainText,
                                                       String salt) {
         return encrypt(Encryptions.bankCardNo(), plainText, salt);
+    }
+
+    /**
+     * 银行卡加密
+     * @param plainText 明文
+     * @return 结果
+     * @since 1.1.0
+     */
+    public static CommonEncryptResponse bankCardNoEncrypt(String plainText) {
+        return bankCardNoEncrypt(plainText, DEFAULT_SALT);
+    }
+
+    /**
+     * 密码加密
+     * @param plainText 明文
+     * @param salt 秘钥
+     * @return 结果
+     */
+    public static CommonEncryptResponse passwordEncrypt(String plainText,
+                                                          String salt) {
+        return encrypt(Encryptions.password(), plainText, salt);
+    }
+
+    /**
+     * 密码加密
+     * @param plainText 明文
+     * @return 结果
+     * @since 1.1.0
+     */
+    public static CommonEncryptResponse passwordEncrypt(String plainText) {
+        return passwordEncrypt(plainText, DEFAULT_SALT);
     }
 
     /**
@@ -196,6 +283,88 @@ public class EncryptionLocalUtil {
                                            String salt) {
         return decrypt(Encryptions.idCard(), cipher, salt);
     }
+
+    /**
+     * 地址解密（默认 salt）
+     * @param cipher 密文
+     * @return 明文
+     * @since 1.1.0
+     */
+    public static String addressDecrypt(String cipher) {
+        return addressDecrypt(cipher, DEFAULT_SALT);
+    }
+
+    /**
+     * 邮箱解密（默认 salt）
+     * @param cipher 密文
+     * @return 明文
+     * @since 1.1.0
+     */
+    public static String emailDecrypt(String cipher) {
+        return emailDecrypt(cipher, DEFAULT_SALT);
+    }
+
+    /**
+     * 手机号解密（默认 salt）
+     * @param cipher 密文
+     * @return 明文
+     * @since 1.1.0
+     */
+    public static String phoneDecrypt(String cipher) {
+        return phoneDecrypt(cipher, DEFAULT_SALT);
+    }
+
+    /**
+     * 姓名解密（默认 salt）
+     * @param cipher 密文
+     * @return 明文
+     * @since 1.1.0
+     */
+    public static String nameDecrypt(String cipher) {
+        return nameDecrypt(cipher, DEFAULT_SALT);
+    }
+
+    /**
+     * 银行卡号解密（默认 salt）
+     * @param cipher 密文
+     * @return 明文
+     * @since 1.1.0
+     */
+    public static String bankCardNoDecrypt(String cipher) {
+        return bankCardNoDecrypt(cipher, DEFAULT_SALT);
+    }
+
+    /**
+     * 身份证解密（默认 salt）
+     * @param cipher 密文
+     * @return 明文
+     * @since 1.1.0
+     */
+    public static String idCardDecrypt(String cipher) {
+        return idCardDecrypt(cipher, DEFAULT_SALT);
+    }
+
+    /**
+     * 密码解密
+     * @param cipher 密文
+     * @param salt 秘钥
+     * @return 明文
+     */
+    public static String passwordDecrypt(String cipher,
+                                         String salt) {
+        return decrypt(Encryptions.password(), cipher, salt);
+    }
+
+    /**
+     * 密码解密（默认 salt）
+     * @param cipher 密文
+     * @return 明文
+     * @since 1.1.0
+     */
+    public static String passwordDecrypt(String cipher) {
+        return passwordDecrypt(cipher, DEFAULT_SALT);
+    }
+
 
     /**
      * 解密

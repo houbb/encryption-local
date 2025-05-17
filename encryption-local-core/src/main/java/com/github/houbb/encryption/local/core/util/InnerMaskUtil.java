@@ -19,6 +19,13 @@ public final class InnerMaskUtil {
      * @return 结果
      */
     public static String phone(final String phone) {
+        if(StringUtil.isEmpty(phone)) {
+            return phone;
+        }
+        if(phone.length() <= 3) {
+            return phone;
+        }
+
         final int prefixLength = 3;
         final String middle = "****";
         return StringUtil.buildString(phone, middle, prefixLength);
@@ -31,7 +38,7 @@ public final class InnerMaskUtil {
      */
     public static String email(final String email) {
         if(StringUtil.isEmpty(email)) {
-            return null;
+            return email;
         }
 
         final int prefixLength = 3;
@@ -80,6 +87,10 @@ public final class InnerMaskUtil {
      * @return 脱敏结果
      */
     public static String bankCardNum(final String cardId) {
+        if(StringUtil.isEmpty(cardId)) {
+            return cardId;
+        }
+
         final int prefixLength = 6;
         int times = cardId.length() - 10;
         final String middle = StringUtil.repeat("*", times);
@@ -93,6 +104,10 @@ public final class InnerMaskUtil {
      * @return 脱敏结果
      */
     public static String idCard(final String cardId) {
+        if(StringUtil.isEmpty(cardId)) {
+            return cardId;
+        }
+
         final int prefixLength = 6;
         int times = cardId.length() - 9;
         final String middle = StringUtil.repeat("*", times);
@@ -106,10 +121,28 @@ public final class InnerMaskUtil {
      * @return 脱敏结果
      */
     public static String address(final String address) {
+        if(StringUtil.isEmpty(address)) {
+            return address;
+        }
+
         final int prefixLength = 6;
         int times = address.length() - 10;
         final String middle = StringUtil.repeat("*", times);
         return StringUtil.buildString(address, middle, prefixLength);
+    }
+
+    /**
+     * 密码信息脱敏
+     * @param password 地址
+     * @return 脱敏结果
+     * @since 1.1.0
+     */
+    public static String password(final String password) {
+        if(StringUtil.isEmpty(password)) {
+            return password;
+        }
+
+        return StringUtil.repeat("*", password.length());
     }
 
 }
