@@ -38,6 +38,12 @@
 | [encryption](https://github.com/houbb/encryption)         | 加密机标准API+本地客户端        |
 | [encryption-server](https://github.com/houbb/encryption-server)        | 加密机服务                 |
 
+## 拓展阅读
+
+[【老马】离线版金融敏感信息加解密组件开源项目encryption-local](https://mp.weixin.qq.com/s/ba99l_NUHW6Zv8BCBAqfzg)
+
+[【藏经阁】加密机服务完整解决方案，包含客户端+服务端](https://mp.weixin.qq.com/s/2LQuKvll9EIn6pyFjhwacw)
+
 # 变更日志
 
 > [变更日志](CHANGELOG.md)
